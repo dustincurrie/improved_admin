@@ -1,4 +1,15 @@
 <?php
+// $Id$
+
+
+/**
+ * @file
+ * Default admin view for content.
+ */
+
+/**
+ * Implementation of hook_views_default_views().
+ */
 
 function improved_admin_views_default_views() {
   $views = array();
@@ -333,7 +344,7 @@ function _improved_admin_get_content_filters() {
 }
 
 function _improved_admin_get_content_style_opts($style = 'table') {
-  switch($style) {
+  switch ($style) {
     case 'bulk':
       $opts = array(
         'grouping' => '',
