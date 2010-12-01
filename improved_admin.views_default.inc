@@ -332,7 +332,7 @@ function _improved_admin_get_content_filters() {
   return $filters;
 }
 
-function _improved_admin_get_content_style_opts($style = 'grid') {
+function _improved_admin_get_content_style_opts($style = 'table') {
   switch($style) {
     case 'bulk':
       $opts = array(
