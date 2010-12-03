@@ -393,17 +393,22 @@ function _improved_admin_get_content_style_opts($style = 'table') {
         'selected_operations' => array(
           'node_assign_owner_action' => 'node_assign_owner_action',
           'views_bulk_operations_delete_node_action' => 'views_bulk_operations_delete_node_action',
-          'views_bulk_operations_script_action' => 'views_bulk_operations_script_action',
           'node_make_sticky_action' => 'node_make_sticky_action',
           'node_make_unsticky_action' => 'node_make_unsticky_action',
           'views_bulk_operations_fields_action' => 'views_bulk_operations_fields_action',
           'views_bulk_operations_taxonomy_action' => 'views_bulk_operations_taxonomy_action',
           'node_promote_action' => 'node_promote_action',
-          'node_publish_action' => 'node_publish_action',
           'node_unpromote_action' => 'node_unpromote_action',
+          'node_publish_action' => 'node_publish_action',
           'node_unpublish_action' => 'node_unpublish_action',
         ),
       );
+      if (module_exists('node_export')) {
+        $opts['selected_operations']['node_export_node_bulk:a8cf63fecab3eb3edf6760bc02f258a6'] = 'node_export_node_bulk:a8cf63fecab3eb3edf6760bc02f258a6';
+      }
+      if (module_exists('pathauto')) {
+        $opts['selected_operations']['pathauto_node_update_alias_multiple:620e193b20ba9caa374fea9ca0ad38f0'] = 'pathauto_node_update_alias_multiple:620e193b20ba9caa374fea9ca0ad38f0';
+      }
       break;
     case 'table':
       $opts = array(
