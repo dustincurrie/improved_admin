@@ -207,6 +207,73 @@ function _improved_admin_get_content_fields() {
         ),
         'relationship' => 'none',
       );
+      $fields['translate_node'] = array(
+        'label' => 'Translate',
+        'alter' => array(
+          'alter_text' => 0,
+          'text' => '',
+          'make_link' => 0,
+          'path' => '',
+          'link_class' => '',
+          'alt' => '',
+          'prefix' => '',
+          'suffix' => '',
+          'target' => '',
+          'help' => '',
+          'trim' => 0,
+          'max_length' => '',
+          'word_boundary' => 1,
+          'ellipsis' => 1,
+          'html' => 0,
+          'strip_tags' => 0,
+        ),
+        'empty' => '',
+        'hide_empty' => 0,
+        'empty_zero' => 0,
+        'text' => '',
+        'exclude' => 0,
+        'id' => 'translate_node',
+        'table' => 'node',
+        'field' => 'translate_node',
+        'override' => array(
+          'button' => 'Override',
+        ),
+        'relationship' => 'none',
+      );
+      $fields['translate'] = array(
+        'label' => 'Translation Needed',
+        'alter' => array(
+          'alter_text' => 0,
+          'text' => '',
+          'make_link' => 0,
+          'path' => '',
+          'link_class' => '',
+          'alt' => '',
+          'prefix' => '',
+          'suffix' => '',
+          'target' => '',
+          'help' => '',
+          'trim' => 0,
+          'max_length' => '',
+          'word_boundary' => 1,
+          'ellipsis' => 1,
+          'html' => 0,
+          'strip_tags' => 0,
+        ),
+        'empty' => '',
+        'hide_empty' => 0,
+        'empty_zero' => 0,
+        'type' => 'yes-no',
+        'not' => 0,
+        'exclude' => 0,
+        'id' => 'translate',
+        'table' => 'node',
+        'field' => 'translate',
+        'override' => array(
+          'button' => 'Override',
+        ),
+        'relationship' => 'none',
+      );
     }
     $fields['edit_node'] = array(
       'label' => 'Edit',
@@ -339,69 +406,109 @@ function _improved_admin_get_content_filters() {
       ),
       'relationship' => 'none',
     );
+   $filters['translate'] = array(
+      'operator' => '=',
+      'value' => 'All',
+      'group' => '0',
+      'exposed' => TRUE,
+      'expose' => array(
+        'operator' => '',
+        'identifier' => 'translate',
+        'label' => 'Translation Outdated',
+        'optional' => 1,
+        'remember' => 1,
+      ),
+      'id' => 'translate',
+      'table' => 'node',
+      'field' => 'translate',
+      'relationship' => 'none',
+      'override' => array(
+        'button' => 'Override',
+      ),
+    );
   }
   return $filters;
 }
 
 function _improved_admin_get_content_style_opts($style = 'table') {
+  $opts = array(
+    'grouping' => '',
+    'override' => 1,
+    'sticky' => 1,
+    'order' => 'asc',
+  );
+  $opts['columns']['title'] = 'title';
+  $opts['columns']['timestamp'] = 'title';
+  if (module_exists('og_views')) {
+    $opts['columns']['group_nid'] = 'group_nid';
+  }
+  $opts['columns']['type'] = 'type';
+  $opts['columns']['name'] = 'name';
+  $opts['columns']['status'] = 'status';
+  if (module_exists('translation')) {
+    $opts['columns']['language'] = 'language';
+    $opts['columns']['translate_node'] = 'language';
+    $opts['columns']['translate'] = 'translate';
+  }
+  $opts['columns']['edit_node'] = 'edit_node';
+  $opts['info'] = array(
+    'title' => array(
+      'sortable' => 1,
+      'separator' => '&nbsp;',
+    ),
+    'group_nid' => array(
+      'separator' => '',
+    ),
+    'timestamp' => array(
+      'separator' => '',
+    ),
+    'type' => array(
+      'sortable' => 1,
+      'separator' => '',
+    ),
+    'name' => array(
+      'sortable' => 1,
+      'separator' => '',
+    ),
+    'status' => array(
+      'sortable' => 1,
+      'separator' => '',
+    ),
+    'language' => array(
+      'sortable' => 1,
+      'separator' => '&nbsp;',
+    ),
+    'translate_node' => array(
+      'separator' => '',
+    ),
+    'translate' => array(
+      'sortable' => 1,
+      'separator' => '',
+    ),
+    'edit_node' => array(
+      'separator' => '',
+    ),
+  );
+  $opts['default'] = '-1';
   switch ($style) {
     case 'bulk':
-      $opts = array(
-        'grouping' => '',
-        'override' => 1,
-        'sticky' => 0,
-        'order' => 'asc',
-        'columns' => array(
-          'title' => 'title',
-          'timestamp' => 'title',
-          'type' => 'type',
-          'name' => 'name',
-          'status' => 'status',
-          'edit_node' => 'edit_node',
-        ),
-        'info' => array(
-          'title' => array(
-            'sortable' => 1,
-            'separator' => '&nbsp;',
-          ),
-          'timestamp' => array(
-            'separator' => '',
-          ),
-          'type' => array(
-            'sortable' => 1,
-            'separator' => '',
-          ),
-          'name' => array(
-            'sortable' => 1,
-            'separator' => '',
-          ),
-          'status' => array(
-            'sortable' => 1,
-            'separator' => '',
-          ),
-          'edit_node' => array(
-            'separator' => '',
-          ),
-        ),
-        'default' => '-1',
-        'execution_type' => '1',
-        'display_type' => '0',
-        'hide_select_all' => 0,
-        'skip_confirmation' => 0,
-        'display_result' => 1,
-        'merge_single_action' => 0,
-        'selected_operations' => array(
-          'node_assign_owner_action' => 'node_assign_owner_action',
-          'views_bulk_operations_delete_node_action' => 'views_bulk_operations_delete_node_action',
-          'node_make_sticky_action' => 'node_make_sticky_action',
-          'node_make_unsticky_action' => 'node_make_unsticky_action',
-          'views_bulk_operations_fields_action' => 'views_bulk_operations_fields_action',
-          'views_bulk_operations_taxonomy_action' => 'views_bulk_operations_taxonomy_action',
-          'node_promote_action' => 'node_promote_action',
-          'node_unpromote_action' => 'node_unpromote_action',
-          'node_publish_action' => 'node_publish_action',
-          'node_unpublish_action' => 'node_unpublish_action',
-        ),
+      $opts['execution_type'] = '1';
+      $opts['display_type'] = '0';
+      $opts['hide_select_all'] = 0;
+      $opts['skip_confirmation'] = 0;
+      $opts['display_result'] = 1;
+      $opts['merge_single_action'] = 0;
+      $opts['selected_operations'] = array(
+        'node_assign_owner_action' => 'node_assign_owner_action',
+        'views_bulk_operations_delete_node_action' => 'views_bulk_operations_delete_node_action',
+        'node_make_sticky_action' => 'node_make_sticky_action',
+        'node_make_unsticky_action' => 'node_make_unsticky_action',
+        'views_bulk_operations_fields_action' => 'views_bulk_operations_fields_action',
+        'views_bulk_operations_taxonomy_action' => 'views_bulk_operations_taxonomy_action',
+        'node_promote_action' => 'node_promote_action',
+        'node_unpromote_action' => 'node_unpromote_action',
+        'node_publish_action' => 'node_publish_action',
+        'node_unpublish_action' => 'node_unpublish_action',
       );
       if (module_exists('node_export')) {
         $opts['selected_operations']['node_export_node_bulk:a8cf63fecab3eb3edf6760bc02f258a6'] = 'node_export_node_bulk:a8cf63fecab3eb3edf6760bc02f258a6';
@@ -409,56 +516,6 @@ function _improved_admin_get_content_style_opts($style = 'table') {
       if (module_exists('pathauto')) {
         $opts['selected_operations']['pathauto_node_update_alias_multiple:620e193b20ba9caa374fea9ca0ad38f0'] = 'pathauto_node_update_alias_multiple:620e193b20ba9caa374fea9ca0ad38f0';
       }
-      break;
-    case 'table':
-      $opts = array(
-        'grouping' => '',
-        'override' => 1,
-        'sticky' => 1,
-        'order' => 'asc',
-        'columns' => array(
-          'title' => 'title',
-          'timestamp' => 'title',
-          'group_nid' => 'group_nid',
-          'type' => 'type',
-          'name' => 'name',
-          'status' => 'status',
-          'language' => 'language',
-          'edit_node' => 'edit_node',
-        ),
-        'info' => array(
-          'title' => array(
-            'sortable' => 1,
-            'separator' => '&nbsp;',
-          ),
-          'group_nid' => array(
-            'separator' => '',
-          ),
-          'timestamp' => array(
-            'separator' => '',
-          ),
-          'type' => array(
-            'sortable' => 1,
-            'separator' => '',
-          ),
-          'name' => array(
-            'sortable' => 1,
-            'separator' => '',
-          ),
-          'status' => array(
-            'sortable' => 1,
-            'separator' => '',
-          ),
-          'language' => array(
-            'sortable' => 1,
-            'separator' => '',
-          ),
-          'edit_node' => array(
-            'separator' => '',
-          ),
-        ),
-        'default' => '-1',
-      );
       break;
   }
   return $opts;
